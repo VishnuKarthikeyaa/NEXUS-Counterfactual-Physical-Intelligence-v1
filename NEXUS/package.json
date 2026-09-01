@@ -1,0 +1,12 @@
+{
+  "name": "nexus-counterfactual-physical-intelligence",
+  "version": "0.1.0",
+  "description": "NEXUS — Counterfactual Physical Intelligence. A smartphone-first decision intelligence engine prototype for iQOO Hackathon 2026, Open Innovation Track.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 8080 --directory ui",
+    "test": "node tests/run-tests.js"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>NEXUS — Counterfactual Physical Intelligence</title>
+<meta name="description" content="NEXUS: a smartphone-first decision intelligence engine. See the situation. Explore the possibilities. Choose the better outcome." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+<div id="phone" class="phone">
+
+  <!-- Status strip: demo-mode indicator, lives across all screens -->
+  <div class="statusbar">
+    <span class="statusbar__brand">NEXUS</span>
+    <button id="demoModeBadge" class="badge badge--demo" title="Running without internet, camera model, or API key">DEMO MODE</button>
+  </div>
+
+  <main id="screens" class="screens">
+
+    <!-- SCREEN 1 — HOME -->
+    <section class="screen" data-screen="home">
+      <div class="home__hero">
+        <div class="home__mark" aria-hidden="true">
+          <svg viewBox="0 0 120 120" class="mark-svg">
+            <circle cx="60" cy="60" r="52" class="mark-ring mark-ring--outer"/>
+            <circle cx="60" cy="60" r="36" class="mark-ring mark-ring--mid"/>
+            <circle cx="60" cy="60" r="4" class="mark-core"/>
+            <line x1="60" y1="8" x2="60" y2="24" class="mark-spoke"/>
+            <line x1="60" y1="96" x2="60" y2="112" class="mark-spoke"/>
+            <line x1="8" y1="60" x2="24" y2="60" class="mark-spoke"/>
+            <line x1="96" y1="60" x2="112" y2="60" class="mark-spoke"/>
+          </svg>
+        </div>
+        <h1 class="home__title">NEXUS</h1>
+        <p class="home__subtitle">Counterfactual Physical Intelligence</p>
+        <p class="home__tagline">See the situation. Explore the possibilities. Choose the better outcome.</p>
+      </div>
+      <div class="home__actions">
+        <button class="btn btn--primary" data-action="go-scan">Scan environment</button>
+        <button class="btn btn--ghost" data-action="go-ask">Ask NEXUS</button>
+      </div>
+      <p class="home__footnote">Team CODEX · iQOO Hackathon 2026 · Open Innovation Track</p>
+    </section>
+
+    <!-- SCREEN 2 — SCAN -->
+    <section class="screen" data-screen="scan">
+      <header class="screen__header">
+        <button class="btn--back" data-action="back-home" aria-label="Back">‹</button>
+        <h2>Scan environment</h2>
+      </header>
+
+      <div class="viewport">
+        <div class="viewport__frame" id="viewportFrame">
+          <div class="viewport__placeholder">Simulated workspace scene</div>
+          <div id="detectionOverlay" class="detection-overlay"></div>
+        </div>
+        <div class="viewport__scanline" aria-hidden="true"></div>
+      </div>
+
+      <div class="detected-panel">
+        <p class="detected-panel__count" id="detectedCount">Scanning…</p>
+        <ul class="detected-list" id="detectedList"></ul>
+      </div>
+
+      <button class="btn btn--primary" data-action="go-goal" id="continueFromScan" disabled>Continue</button>
+    </section>
+
+    <!-- SCREEN 3 — GOAL -->
+    <section class="screen" data-screen="goal">
+      <header class="screen__header">
+        <button class="btn--back" data-action="back-scan" aria-label="Back">‹</button>
+        <h2>What do you want?</h2>
+      </header>
+
+      <div class="goal-input">
+        <textarea id="goalText" rows="2" placeholder="e.g. Make this workspace safer and easier to access.">Make this workspace safer and easier to access.</textarea>
+        <button class="btn--mic" id="micButton" data-action="use-voice" title="Speak your goal">🎙</button>
+      </div>
+
+      <div class="priorities">
+        <p class="priorities__label">Priorities</p>
+        <div class="priority-row" data-priority="safety">
+          <span>Safety</span>
+          <input type="range" min="0" max="100" value="35" />
+          <output>35</output>
+        </div>
+        <div class="priority-row" data-priority="accessibility">
+          <span>Accessibility</span>
+          <input type="range" min="0" max="100" value="35" />
+          <output>35</output>
+        </div>
+        <div class="priority-row" data-priority="efficiency">
+          <span>Efficiency</span>
+          <input type="range" min="0" max="100" value="15" />
+          <output>15</output>
+        </div>
+        <div class="priority-row" data-priority="effort">
+          <span>Minimum effort</span>
+          <input type="range" min="0" max="100" value="15" />
+          <output>15</output>
+        </div>
+      </div>
+
+      <button class="btn btn--primary" data-action="go-analysis">Explore possibilities</button>
+    </section>
+
+    <!-- SCREEN 4 — ANALYSIS -->
+    <section class="screen" data-screen="analysis">
+      <div class="analysis">
+        <div class="analysis__spinner" aria-hidden="true"></div>
+        <h2 class="analysis__title">NEXUS analysis</h2>
+        <p class="analysis__count">3 possible plans found</p>
+        <ul class="analysis__steps" id="analysisSteps">
+          <li data-step="safety">Evaluating safety</li>
+          <li data-step="accessibility">Evaluating accessibility</li>
+          <li data-step="effort">Evaluating effort</li>
+          <li data-step="constraints">Checking constraints</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SCREEN 5 — RESULTS -->
+    <section class="screen" data-screen="results">
+      <header class="screen__header">
+        <button class="btn--back" data-action="back-goal" aria-label="Back">‹</button>
+        <h2>Candidate plans</h2>
+      </header>
+
+      <div class="candidate-list" id="candidateList"></div>
+
+      <div class="results__actions">
+        <button class="btn btn--secondary" data-action="go-compare">Compare all</button>
+        <button class="btn btn--secondary" data-action="go-priorities">Change priorities</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 6 — WHY THIS PLAN -->
+    <section class="screen" data-screen="why">
+      <header class="screen__header">
+        <button class="btn--back" data-action="back-results" aria-label="Back">‹</button>
+        <h2 id="whyTitle">Why this plan?</h2>
+      </header>
+      <div class="why-panel" id="whyPanel"></div>
+      <button class="btn btn--primary" data-action="back-results">Back to plans</button>
+    </section>
+
+    <!-- SCREEN 7 — COMPARE -->
+    <section class="screen" data-screen="compare">
+      <header class="screen__header">
+        <button class="btn--back" data-action="back-results" aria-label="Back">‹</button>
+        <h2>Compare plans</h2>
+      </header>
+      <div class="compare-table-wrap">
+        <table class="compare-table" id="compareTable"></table>
+      </div>
+      <button class="btn btn--secondary" data-action="go-priorities">Change priorities</button>
+    </section>
+
+    <!-- SCREEN 8 — CHANGE PRIORITIES -->
+    <section class="screen" data-screen="priorities">
+      <header class="screen__header">
+        <button class="btn--back" data-action="back-results" aria-label="Back">‹</button>
+        <h2>Change priorities</h2>
+      </header>
+
+      <div class="preset-row">
+        <button class="chip" data-preset="safetyFirst">Safety first</button>
+        <button class="chip" data-preset="minimumMovement">Minimum movement</button>
+      </div>
+
+      <div class="priorities priorities--recalc">
+        <div class="priority-row" data-priority="safety">
+          <span>Safety</span>
+          <input type="range" min="0" max="100" value="35" />
+          <output>35</output>
+        </div>
+        <div class="priority-row" data-priority="accessibility">
+          <span>Accessibility</span>
+          <input type="range" min="0" max="100" value="35" />
+          <output>35</output>
+        </div>
+        <div class="priority-row" data-priority="efficiency">
+          <span>Efficiency</span>
+          <input type="range" min="0" max="100" value="15" />
+          <output>15</output>
+        </div>
+        <div class="priority-row" data-priority="effort">
+          <span>Minimum effort</span>
+          <input type="range" min="0" max="100" value="15" />
+          <output>15</output>
+        </div>
+      </div>
+
+      <button class="btn btn--primary" data-action="recalculate">Recalculate recommendation</button>
+    </section>
+
+  </main>
+</div>
+
+<script type="module" src="./main.js"></script>
+</body>
+</html>
